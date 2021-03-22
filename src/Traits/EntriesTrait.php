@@ -2,13 +2,16 @@
 
 namespace Vume\Traits;
 
+use Vume\Classes\Entry;
+use Vume\Modules\EntryModule;
+
 trait EntriesTrait
 {
     protected $entries_total;
 
     /**
      * Where clause
-     * 
+     *
      * @param string $field
      * @param string $value
      * @return self
@@ -20,7 +23,7 @@ trait EntriesTrait
 
     /**
      * Search clause
-     * 
+     *
      * @param string $field
      * @param string $value
      * @return self
@@ -32,7 +35,7 @@ trait EntriesTrait
 
     /**
      * Limit
-     * 
+     *
      * @param int $value
      * @return self
      */
@@ -43,7 +46,7 @@ trait EntriesTrait
 
     /**
      * Offset
-     * 
+     *
      * @param int $value
      * @return self
      */
@@ -63,7 +66,7 @@ trait EntriesTrait
 
         $this->entries_total = $data['entries_total'];
         foreach ($data['entries'] as $entry) {
-            $this->entries()->add($entry);
+            $this->entries->add(new Entry($entry, $this));
         }
 
         return $this;
@@ -72,7 +75,7 @@ trait EntriesTrait
     /**
      * Return entries
      *
-     * @return Vume\Modules\Entries $entries
+     * @return Vume\Classes\Entries $entries
      */
     public function entries()
     {
@@ -87,7 +90,7 @@ trait EntriesTrait
      * Find entry by id
      *
      * @param string $id
-     * @return Vume\Modules\Entry $entry
+     * @return Vume\Classes\Entry $entry
      */
     public function find($id)
     {
@@ -97,7 +100,7 @@ trait EntriesTrait
     /**
      * First entry
      *
-     * @return Vume\Modules\Entry $entry
+     * @return Vume\Classes\Entry $entry
      */
     public function first()
     {

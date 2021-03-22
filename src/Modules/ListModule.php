@@ -2,6 +2,7 @@
 
 namespace Vume\Modules;
 
+use Vume\Classes\Entries;
 use Vume\CMS;
 use Vume\Traits\EntriesTrait;
 
@@ -19,10 +20,9 @@ class ListModule extends Module
      */
     public function __construct(string $list, CMS $cms)
     {
+        $this->entries = new Entries();
         $this->route = '/list';
         $this->addToBuilder('list', $list);
-
-        $this->entries = new Entries();
 
         parent::__construct($cms);
     }

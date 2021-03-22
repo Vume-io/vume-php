@@ -2,7 +2,7 @@
 
 namespace Vume\Tests;
 
-use Vume\Modules\Entries;
+use Vume\Classes\Entries;
 use Vume\Modules\ListModule;
 use Vume\Exceptions\ListNotFoundException;
 
@@ -67,7 +67,6 @@ class ListTest extends BaseTest
     public function testSearchClauseInList()
     {
         $entry = $this->vume->list('list-test')->search('fields.text', '2')->first();
-
         $this->assertEquals('Test 2', $entry->field('text'));
     }
 }

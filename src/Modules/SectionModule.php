@@ -2,6 +2,7 @@
 
 namespace Vume\Modules;
 
+use Vume\Classes\Entry;
 use Vume\CMS;
 
 class SectionModule extends Module
@@ -24,14 +25,14 @@ class SectionModule extends Module
 
     /**
      * Call
-     * 
+     *
      * @return Self
      */
     public function call()
     {
         $data = parent::call();
 
-        $this->entry = new Entry($data['entry']);
+        $this->entry = new Entry($data['entry'], $this);
 
         return $this;
     }
@@ -39,7 +40,7 @@ class SectionModule extends Module
     /**
      * Return entry
      *
-     * @return Vume\Modules\Entry $entry
+     * @return Vume\Classes\Entry $entry
      */
     public function entry()
     {

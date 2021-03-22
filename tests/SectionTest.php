@@ -2,10 +2,11 @@
 
 namespace Vume\Tests;
 
-use Vume\Modules\Entry;
-use Vume\Modules\Relations;
+use Vume\Classes\Entry;
+use Vume\Classes\Relations;
 use Vume\Modules\SectionModule;
 use Vume\Exceptions\SectionNotFoundException;
+use Vume\Modules\RelationModule;
 
 class SectionTest extends BaseTest
 {
@@ -47,8 +48,6 @@ class SectionTest extends BaseTest
     public function testSectionEntryRelations()
     {
         $entry = $this->vume->section('section-test')->entry();
-
-        dd($entry->relations());
 
         $this->assertInstanceOf(Relations::class, $entry->relations());
     }

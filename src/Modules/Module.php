@@ -37,18 +37,17 @@ class Module
     {
         $this->called = true;
         $result = $this->api->call('GET', $this->route, $this->builder);
-
         switch ($result['code']) {
             case 200:
                 $this->name = $result['body']['data']['name'] ?? null;
                 return $result['body']['data'] ?? [];
             default:
-                switch (get_class($this)) {
-                    case 'Vume\Modules\SectionModule':
+                switch ($this->type()) {
+                    case 'section':
                         throw new SectionNotFoundException();
-                    case 'Vume\Modules\ListModule':
+                    case 'list':
                         throw new ListNotFoundException();
-                    case 'Vume\Modules\RelationModule':
+                    case 'relation':
                         throw new RelationNotFoundException();
                 }
         }
@@ -65,8 +64,39 @@ class Module
     }
 
     /**
+     * Get the type of the loaded module
+     *
+     * @return string $name
+     */
+    public function type()
+    {
+        $type = get_class($this);
+
+        switch ($type) {
+            case 'Vume\Modules\SectionModule':
+                return 'section';
+            case 'Vume\Modules\ListModule':
+                return 'list';
+            case 'Vume\Modules\RelationModule':
+                return 'relation';
+        }
+
+        return $type;
+    }
+
+    /**
+     * Get the cms of the loaded module
+     *
+     * @return Cms $cms
+     */
+    protected function cms()
+    {
+        return $this->cms;
+    }
+
+    /**
      * Add to builder
-     * 
+     *
      * @return void
      */
     protected function addToBuilder($key, $value)
@@ -78,7 +108,7 @@ class Module
 
     /**
      * Add where clause to builder
-     * 
+     *
      * @param string $field
      * @param string $value
      * @return self
@@ -94,7 +124,7 @@ class Module
 
     /**
      * Add search clause to builder
-     * 
+     *
      * @param string $field
      * @param string $value
      * @return self

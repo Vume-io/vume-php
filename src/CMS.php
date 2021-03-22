@@ -2,7 +2,9 @@
 
 namespace Vume;
 
+use Vume\Classes\Entry;
 use Vume\Modules\ListModule;
+use Vume\Modules\RelationModule;
 use Vume\Modules\SectionModule;
 
 class CMS
@@ -27,7 +29,7 @@ class CMS
 
     /**
      * Set api endpoint
-     * 
+     *
      * @param string $api_endpoint
      * @return CMS
      */
@@ -40,7 +42,7 @@ class CMS
 
     /**
      * Get api endpoint
-     * 
+     *
      * @return string $api_endpoint
      */
     public function getApiEndpoint()
@@ -50,7 +52,7 @@ class CMS
 
     /**
      * Set access token
-     * 
+     *
      * @param string $access_token
      * @return CMS
      */
@@ -63,7 +65,7 @@ class CMS
 
     /**
      * Get access token
-     * 
+     *
      * @return string $access_token
      */
     public function getAccessToken()
