@@ -34,7 +34,7 @@ class RelationTest extends BaseTest
     {
         $entries = $this->getListRelation()->entries();
 
-        $this->assertNotNull($entries->first()->field('text'));
+        $this->assertNotNull($entries->first()->field('text')->value());
     }
 
     public function testLimitClauseInRelation()
@@ -48,21 +48,21 @@ class RelationTest extends BaseTest
     {
         $relation = $this->getListRelation()->offset(1)->call();
 
-        $this->assertEquals('Related 2', $relation->entries()->first()->field('text'));
+        $this->assertEquals('Related 2', $relation->entries()->first()->field('text')->value());
     }
 
     public function testWhereClauseInRelation()
     {
         $entry = $this->getListRelation()->where('fields.text', 'Related 2')->first();
 
-        $this->assertEquals('Related 2', $entry->field('text'));
+        $this->assertEquals('Related 2', $entry->field('text')->value());
     }
 
     public function testSearchClauseInRelation()
     {
         $entry = $this->getListRelation()->search('fields.text', '2')->first();
 
-        $this->assertEquals('Related 2', $entry->field('text'));
+        $this->assertEquals('Related 2', $entry->field('text')->value());
     }
 
     /**

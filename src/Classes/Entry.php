@@ -17,7 +17,7 @@ class Entry
     /**
      * Constructor
      *
-     * @param string $list
+     * @param array $entry
      * @param Vume\CMS $cms
      */
     public function __construct(array $entry, Module $module)
@@ -28,8 +28,12 @@ class Entry
 
         $this->id = $entry['id'] ?? null;
         $this->module = $module;
-        $this->fields = $entry['fields'];
+        $this->fields = new Fields();
         $this->relations = new Relations();
+
+        foreach ($entry['fields'] as $slug => $field) {
+            $this->fields->add(new Field(array_merge($field, ['id' => $slug])));
+        }
 
         foreach ($entry['relations'] as $relation) {
             $this->relations->add(new RelationModule($relation, $this));
@@ -73,6 +77,6 @@ class Entry
      */
     public function field(string $slug)
     {
-        return $this->fields[$slug]['data'] ?? null;
+        return $this->fields->find($slug) ?? null;
     }
 }

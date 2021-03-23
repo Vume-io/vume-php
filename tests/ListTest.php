@@ -33,7 +33,22 @@ class ListTest extends BaseTest
     {
         $entries = $this->vume->list('list-test')->call()->entries();
 
-        $this->assertNotNull($entries->first()->field('text'));
+        $this->assertNotNull($entries->first()->field('text')->value());
+    }
+
+    public function testListEntryFieldImage()
+    {
+        $entries = $this->vume->list('list-test')->call()->entries();
+
+        $field = $entries->first()->field('image');
+
+
+
+        $this->assertNotNull($field->value());
+
+        $this->assertNotNull($field->value('url'));
+        $this->assertNotNull($field->versions()->value());
+        $this->assertNotNull($field->version('thumbnail')->value('url'));
     }
 
     public function testListEntriesShorthandFunction()
@@ -54,19 +69,19 @@ class ListTest extends BaseTest
     {
         $list = $this->vume->list('list-test')->offset(1)->call();
 
-        $this->assertEquals('Test 2', $list->entries()->first()->field('text'));
+        $this->assertEquals('Test 2', $list->entries()->first()->field('text')->value());
     }
 
     public function testWhereClauseInList()
     {
         $entry = $this->vume->list('list-test')->where('fields.text', 'Test 2')->first();
 
-        $this->assertEquals('Test 2', $entry->field('text'));
+        $this->assertEquals('Test 2', $entry->field('text')->value());
     }
 
     public function testSearchClauseInList()
     {
         $entry = $this->vume->list('list-test')->search('fields.text', '2')->first();
-        $this->assertEquals('Test 2', $entry->field('text'));
+        $this->assertEquals('Test 2', $entry->field('text')->value());
     }
 }
