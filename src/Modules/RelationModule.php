@@ -29,6 +29,7 @@ class RelationModule extends Module
             throw new RelationInvalidException();
         }
 
+        $this->entries = new Entries();
         $this->entry = $entry;
 
         $this->route = '/relation';

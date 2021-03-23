@@ -2,7 +2,7 @@
 
 namespace Vume\Tests;
 
-use Vume\Modules\Entries;
+use Vume\Classes\Entries;
 use Vume\Modules\RelationModule;
 use Vume\Exceptions\RelationNotFoundException;
 
@@ -18,59 +18,59 @@ class RelationTest extends BaseTest
 
     public function testListRelationInstance()
     {
-        $entry = $this->vume->list('list-test')->entries()->first();
-        $relation = $entry->relations()->first();
+        $relation = $this->getListRelation();
 
         $this->assertInstanceOf(RelationModule::class, $relation);
     }
 
-    // public function testEntriesFromRelation()
-    // {
-    //     $entry = $this->vume->list('list-test')->entries()->first();
-    //     $relation = $entry->relations()->first();
+    public function testEntriesFromRelation()
+    {
+        $relation = $this->getListRelation();
 
-    //     $this->assertInstanceOf(Entries::class, $relation->entries());
-    // }
+        $this->assertInstanceOf(Entries::class, $relation->entries());
+    }
 
-    // public function testListEntryFieldValue()
-    // {
-    //     $entries = $this->vume->list('list-test')->call()->entries();
+    public function testRelationEntryFieldValue()
+    {
+        $entries = $this->getListRelation()->entries();
 
-    //     $this->assertNotNull($entries->first()->field('text'));
-    // }
+        $this->assertNotNull($entries->first()->field('text'));
+    }
 
-    // public function testListEntriesShorthandFunction()
-    // {
-    //     $entries = $this->vume->list('list-test')->entries();
+    public function testLimitClauseInRelation()
+    {
+        $relation = $this->getListRelation()->limit(2)->call();
 
-    //     $this->assertInstanceOf(Entries::class, $entries);
-    // }
+        $this->assertEquals(2, $relation->entries()->count());
+    }
 
-    // public function testLimitClauseInList()
-    // {
-    //     $list = $this->vume->list('list-test')->limit(2)->call();
+    public function testOffsetClauseInRelation()
+    {
+        $relation = $this->getListRelation()->offset(1)->call();
 
-    //     $this->assertEquals(2, $list->entries()->count());
-    // }
+        $this->assertEquals('Related 2', $relation->entries()->first()->field('text'));
+    }
 
-    // public function testOffsetClauseInList()
-    // {
-    //     $list = $this->vume->list('list-test')->offset(1)->call();
+    public function testWhereClauseInRelation()
+    {
+        $entry = $this->getListRelation()->where('fields.text', 'Related 2')->first();
 
-    //     $this->assertEquals('Test 2', $list->entries()->first()->field('text'));
-    // }
+        $this->assertEquals('Related 2', $entry->field('text'));
+    }
 
-    // public function testWhereClauseInList()
-    // {
-    //     $entry = $this->vume->list('list-test')->where('fields.text', 'Test 2')->first();
+    public function testSearchClauseInRelation()
+    {
+        $entry = $this->getListRelation()->search('fields.text', '2')->first();
 
-    //     $this->assertEquals('Test 2', $entry->field('text'));
-    // }
+        $this->assertEquals('Related 2', $entry->field('text'));
+    }
 
-    // public function testSearchClauseInList()
-    // {
-    //     $entry = $this->vume->list('list-test')->search('fields.text', '2')->first();
-
-    //     $this->assertEquals('Test 2', $entry->field('text'));
-    // }
+    /**
+     * Get relation from list test
+     */
+    private function getListRelation()
+    {
+        $entry = $this->vume->list('list-test')->entries()->first();
+        return $entry->relations()->first();
+    }
 }
