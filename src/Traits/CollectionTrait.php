@@ -5,6 +5,7 @@ namespace Vume\Traits;
 trait CollectionTrait
 {
     protected $collection;
+    protected $index = 0;
 
     /**
      * Set offset
@@ -48,6 +49,56 @@ trait CollectionTrait
     public function offsetGet($offset)
     {
         return $this->collection[$offset] ?? null;
+    }
+
+    /**
+     * Current item
+     *
+     * @return mixed
+     */
+    public function current()
+    {
+        return $this->collection[$this->index];
+    }
+
+    /**
+     * Next item
+     *
+     * @return void
+     */
+    public function next()
+    {
+        $this->index++;
+    }
+
+    /**
+     * Rewind index
+     *
+     * @return void
+     */
+    public function rewind()
+    {
+        $this->index = 0;
+    }
+
+    /**
+     * Get the key
+     *
+     * @return scalar
+     */
+    public function key()
+    {
+        return $this->index;
+    }
+
+    /**
+     * Check if collection item on key is valid
+     *
+     * @return bool
+     */
+    public function valid()
+    {
+        return isset($this->collection[$this->key()]);
     }
 
     /**

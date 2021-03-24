@@ -49,8 +49,6 @@ class ListTest extends BaseTest
 
         $field = $entries->first()->field('image');
 
-
-
         $this->assertNotNull($field->value());
 
         $this->assertNotNull($field->value('url'));
@@ -63,6 +61,15 @@ class ListTest extends BaseTest
         $entries = $this->vume->list('list-test')->entries();
 
         $this->assertInstanceOf(Entries::class, $entries);
+    }
+
+    public function testListEntryRelationsCanBeIterated()
+    {
+        $entry = $this->vume->list('list-test')->call()->entries()->first();
+
+        foreach ($entry->relations() as $key => $relation) {
+            $this->assertTrue($entry->relations()->valid($key));
+        }
     }
 
     public function testLimitClauseInList()

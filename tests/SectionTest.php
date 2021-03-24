@@ -58,4 +58,13 @@ class SectionTest extends BaseTest
 
         $this->assertInstanceOf(Relations::class, $entry->relations());
     }
+
+    public function testSectionEntryRelationsCanBeIterated()
+    {
+        $entry = $this->vume->section('section-test')->entry();
+
+        foreach ($entry->relations() as $key => $relation) {
+            $this->assertTrue($entry->relations()->valid($key));
+        }
+    }
 }

@@ -52,6 +52,14 @@ class RelationTest extends BaseTest
         $this->assertEquals($entries->first()->field('text')->value(), $entries->first()->value('text'));
     }
 
+    public function testRelationEntriesCanBeIterated()
+    {
+        foreach ($this->getListRelation()->entries() as $key => $entry) {
+            $this->assertNotNull($entry->value('text'));
+            $this->assertTrue($this->getListRelation()->entries()->valid($key));
+        }
+    }
+
     public function testLimitClauseInRelation()
     {
         $relation = $this->getListRelation()->limit(2)->call();
