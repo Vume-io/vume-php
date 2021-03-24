@@ -9,7 +9,7 @@ use Vume\Classes\Relations;
 
 class Entry
 {
-    protected $id;
+    public $id;
     private $fields;
     protected $module;
     protected $relations = [];
