@@ -56,6 +56,17 @@ class ListTest extends BaseTest
         $this->assertNotNull($field->version('thumbnail')->value('url'));
     }
 
+    public function testListEntryFieldImageShorthandValue()
+    {
+        $entry = $this->vume->list('list-test')->call()->entries()->first();
+        $field = $entry->field('image');
+
+        $this->assertNotNull($entry->value('image'));
+        $this->assertNotNull($entry->value('image', 'url'));
+        $this->assertEquals($field->value(), $entry->value('image'));
+        $this->assertEquals($field->value('url'), $entry->value('image', 'url'));
+    }
+
     public function testListEntriesShorthandFunction()
     {
         $entries = $this->vume->list('list-test')->entries();

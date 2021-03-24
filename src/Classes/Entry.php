@@ -101,11 +101,12 @@ class Entry
      *
      * @return mixed $value
      */
-    public function value(string $slug)
+    public function value(string $slug, string $key = null)
     {
         if (!$field = $this->field($slug)) {
             return null;
         }
-        return $field->value;
+
+        return $field->value($key);
     }
 }
