@@ -12,6 +12,7 @@ class RelationModule extends Module
 {
     use EntriesTrait;
 
+    public $id;
     protected $entries;
     protected $entry;
 
@@ -29,6 +30,7 @@ class RelationModule extends Module
             throw new RelationInvalidException();
         }
 
+        $this->id = $relation['slug'];
         $this->entries = new Entries();
         $this->entry = $entry;
 

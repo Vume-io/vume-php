@@ -71,9 +71,23 @@ class Entry
     }
 
     /**
+     * Get the relation of an entry
+     *
+     * @param string $slug
+     *
+     * @return null\RelationModule $relation
+     */
+    public function relation(string $slug)
+    {
+        return $this->relations->find($slug) ?? null;
+    }
+
+    /**
      * Get the data field of entry
      *
-     * @return string
+     * @param string $slug
+     *
+     * @return null\Field $field
      */
     public function field(string $slug)
     {
