@@ -93,4 +93,19 @@ class Entry
     {
         return $this->fields->find($slug) ?? null;
     }
+
+    /**
+     * Get the entry field value by slug
+     *
+     * @param string $slug
+     *
+     * @return mixed $value
+     */
+    public function value(string $slug)
+    {
+        if (!$field = $this->field($slug)) {
+            return null;
+        }
+        return $field->value;
+    }
 }

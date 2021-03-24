@@ -36,6 +36,13 @@ class ListTest extends BaseTest
         $this->assertNotNull($entries->first()->field('text')->value());
     }
 
+    public function testListEntryFieldShorthandValue()
+    {
+        $entries = $this->vume->list('list-test')->call()->entries();
+        $this->assertNotNull($entries->first()->value('text'));
+        $this->assertEquals($entries->first()->field('text')->value(), $entries->first()->value('text'));
+    }
+
     public function testListEntryFieldImage()
     {
         $entries = $this->vume->list('list-test')->call()->entries();
