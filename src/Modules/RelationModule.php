@@ -32,7 +32,10 @@ class RelationModule extends Module
 
         $this->id = $relation['slug'];
         $this->entries = new Entries();
+        $this->addEntries($relation['entries'] ?? []);
         $this->entry = $entry;
+
+        $this->called = isset($relation['entries']);
 
         $this->route = '/relation';
         $this->addToBuilder('relation', $relation['slug']);

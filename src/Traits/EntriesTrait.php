@@ -65,11 +65,22 @@ trait EntriesTrait
         $data = parent::call();
 
         $this->entries_total = $data['entries_total'];
-        foreach ($data['entries'] as $entry) {
-            $this->entries->add(new Entry($entry, $this));
-        }
+        $this->addEntries($data['entries']);
 
         return $this;
+    }
+
+    /**
+     * Add entries
+     *
+     * @param array $entries
+     * @return void
+     */
+    private function addEntries(array $entries = [])
+    {
+        foreach ($entries as $entry) {
+            $this->entries->add(new Entry($entry, $this));
+        }
     }
 
     /**

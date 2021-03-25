@@ -48,7 +48,7 @@ trait RelationsTrait
     {
         if (!isset($this->builder['withRelations'])) $this->builder['withRelations'] = [];
 
-        $this->builder['withRelations'][$relation] = $options;
+        $this->builder['withRelations'][$relation] = $options ?: '';
 
         return $this;
     }

@@ -67,4 +67,11 @@ class SectionTest extends BaseTest
             $this->assertTrue($entry->relations()->valid($key));
         }
     }
+
+    public function testSectionWithLoadedRelationEntries()
+    {
+        $entry = $this->vume->section('section-test')->withRelation('relations-test')->entry()->relation('relations-test')->entries()->first();
+
+        $this->assertInstanceOf(Entry::class, $entry);
+    }
 }
