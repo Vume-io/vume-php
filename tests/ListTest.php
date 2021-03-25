@@ -2,6 +2,7 @@
 
 namespace Vume\Tests;
 
+use Vume\Classes\Entry;
 use Vume\Classes\Entries;
 use Vume\Modules\ListModule;
 use Vume\Exceptions\ListNotFoundException;
@@ -108,5 +109,19 @@ class ListTest extends BaseTest
     {
         $entry = $this->vume->list('list-test')->search('fields.text', '2')->first();
         $this->assertEquals('Test 2', $entry->field('text')->value());
+    }
+
+    public function testWhereClausuleOnCollection()
+    {
+        $entry = $this->vume->list('list-test')->entries()->where('fields.text', 'Test 2')->first();
+
+        $this->assertInstanceOf(Entry::class, $entry);
+    }
+
+    public function testSearchClausuleOnCollection()
+    {
+        $entries = $this->vume->list('list-test')->entries()->search('fields.text', '2');
+
+        $this->assertEquals(1, $entries->count());
     }
 }

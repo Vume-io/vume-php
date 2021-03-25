@@ -4,7 +4,7 @@ namespace Vume\Traits;
 
 trait CollectionTrait
 {
-    protected $collection;
+    protected $collection = [];
     protected $index = 0;
 
     /**
@@ -146,6 +146,74 @@ trait CollectionTrait
         }
 
         return null;
+    }
+
+    /**
+     * Where
+     *
+     * @param string $field
+     * @param string $value
+     * @return self
+     */
+    public function where(string $field, string $value, $parent = null)
+    {
+        $output = [];
+
+        $parts = explode('.', $field);
+
+        foreach ($this->collection as $item) {
+            if (count($parts) === 1) {
+                if (!is_array($item->value()) && $item->value() === $value) {
+                    $output[] = $parent;
+                    break;
+                }
+                continue;
+            }
+
+            switch ($parts[0]) {
+                case 'fields':
+                    $result = $item->fields()->where($parts[1], $value, $item);
+                    if ($result->count()) {
+                        $output[] = $result->first();
+                    }
+                    break;
+            }
+        }
+        return new self($output);
+    }
+
+    /**
+     * Search
+     *
+     * @param string $field
+     * @param string $value
+     * @return self
+     */
+    public function search(string $field, string $value, $parent = null)
+    {
+        $output = [];
+
+        $parts = explode('.', $field);
+
+        foreach ($this->collection as $item) {
+            if (count($parts) === 1) {
+                if (!is_array($item->value()) && str_contains(strtolower($item->value()), strtolower($value))) {
+                    $output[] = $parent;
+                    break;
+                }
+                continue;
+            }
+
+            switch ($parts[0]) {
+                case 'fields':
+                    $result = $item->fields()->search($parts[1], $value, $item);
+                    if ($result->count()) {
+                        $output[] = $result->first();
+                    }
+                    break;
+            }
+        }
+        return new self($output);
     }
 
     /**

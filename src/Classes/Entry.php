@@ -85,6 +85,16 @@ class Entry
     /**
      * Get the data field of entry
      *
+     * @return null\Fields $fields
+     */
+    public function fields()
+    {
+        return $this->fields ?? new Fields();
+    }
+
+    /**
+     * Get the data field of entry
+     *
      * @param string $slug
      *
      * @return null\Field $field
