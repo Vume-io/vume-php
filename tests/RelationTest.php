@@ -16,6 +16,14 @@ class RelationTest extends BaseTest
         $this->assertInstanceOf(RelationModule::class, $relation);
     }
 
+    public function testRelationCanBeFoundBySlug()
+    {
+        $entry = $this->vume->section('section-test')->entry();
+        $relation = $entry->relation('relations-test');
+
+        $this->assertInstanceOf(RelationModule::class, $relation);
+    }
+
     public function testListRelationInstance()
     {
         $relation = $this->getListRelation();
@@ -35,6 +43,21 @@ class RelationTest extends BaseTest
         $entries = $this->getListRelation()->entries();
 
         $this->assertNotNull($entries->first()->field('text')->value());
+    }
+
+    public function testRelationEntryFieldShorthandValue()
+    {
+        $entries = $this->getListRelation()->entries();
+        $this->assertNotNull($entries->first()->value('text'));
+        $this->assertEquals($entries->first()->field('text')->value(), $entries->first()->value('text'));
+    }
+
+    public function testRelationEntriesCanBeIterated()
+    {
+        foreach ($this->getListRelation()->entries() as $key => $entry) {
+            $this->assertNotNull($entry->value('text'));
+            $this->assertTrue($this->getListRelation()->entries()->valid($key));
+        }
     }
 
     public function testLimitClauseInRelation()

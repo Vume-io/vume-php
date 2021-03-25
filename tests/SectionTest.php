@@ -38,6 +38,13 @@ class SectionTest extends BaseTest
         $this->assertNotNull($entry->field('text'));
     }
 
+    public function testSectionEntryFieldShorthandValue()
+    {
+        $entry = $this->vume->section('section-test')->call()->entry();
+        $this->assertNotNull($entry->value('text'));
+        $this->assertEquals($entry->field('text')->value(), $entry->value('text'));
+    }
+
     public function testSectionEntryShorthandFunction()
     {
         $entry = $this->vume->section('section-test')->entry();
@@ -50,5 +57,14 @@ class SectionTest extends BaseTest
         $entry = $this->vume->section('section-test')->entry();
 
         $this->assertInstanceOf(Relations::class, $entry->relations());
+    }
+
+    public function testSectionEntryRelationsCanBeIterated()
+    {
+        $entry = $this->vume->section('section-test')->entry();
+
+        foreach ($entry->relations() as $key => $relation) {
+            $this->assertTrue($entry->relations()->valid($key));
+        }
     }
 }

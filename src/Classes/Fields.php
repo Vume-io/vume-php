@@ -3,9 +3,10 @@
 namespace Vume\Classes;
 
 use ArrayAccess;
+use Iterator;
 use Vume\Traits\CollectionTrait;
 
-class Fields implements ArrayAccess
+class Fields implements ArrayAccess, Iterator
 {
     use CollectionTrait;
 

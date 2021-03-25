@@ -36,13 +36,18 @@ class ListTest extends BaseTest
         $this->assertNotNull($entries->first()->field('text')->value());
     }
 
+    public function testListEntryFieldShorthandValue()
+    {
+        $entries = $this->vume->list('list-test')->call()->entries();
+        $this->assertNotNull($entries->first()->value('text'));
+        $this->assertEquals($entries->first()->field('text')->value(), $entries->first()->value('text'));
+    }
+
     public function testListEntryFieldImage()
     {
         $entries = $this->vume->list('list-test')->call()->entries();
 
         $field = $entries->first()->field('image');
-
-
 
         $this->assertNotNull($field->value());
 
@@ -51,11 +56,31 @@ class ListTest extends BaseTest
         $this->assertNotNull($field->version('thumbnail')->value('url'));
     }
 
+    public function testListEntryFieldImageShorthandValue()
+    {
+        $entry = $this->vume->list('list-test')->call()->entries()->first();
+        $field = $entry->field('image');
+
+        $this->assertNotNull($entry->value('image'));
+        $this->assertNotNull($entry->value('image', 'url'));
+        $this->assertEquals($field->value(), $entry->value('image'));
+        $this->assertEquals($field->value('url'), $entry->value('image', 'url'));
+    }
+
     public function testListEntriesShorthandFunction()
     {
         $entries = $this->vume->list('list-test')->entries();
 
         $this->assertInstanceOf(Entries::class, $entries);
+    }
+
+    public function testListEntryRelationsCanBeIterated()
+    {
+        $entry = $this->vume->list('list-test')->call()->entries()->first();
+
+        foreach ($entry->relations() as $key => $relation) {
+            $this->assertTrue($entry->relations()->valid($key));
+        }
     }
 
     public function testLimitClauseInList()
