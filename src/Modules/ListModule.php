@@ -5,10 +5,11 @@ namespace Vume\Modules;
 use Vume\Classes\Entries;
 use Vume\CMS;
 use Vume\Traits\EntriesTrait;
+use Vume\Traits\RelationsTrait;
 
 class ListModule extends Module
 {
-    use EntriesTrait;
+    use EntriesTrait, RelationsTrait;
 
     protected $entries;
 

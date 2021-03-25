@@ -4,9 +4,12 @@ namespace Vume\Modules;
 
 use Vume\Classes\Entry;
 use Vume\CMS;
+use Vume\Traits\RelationsTrait;
 
 class SectionModule extends Module
 {
+    use RelationsTrait;
+
     protected $entry;
 
     /**
