@@ -95,6 +95,19 @@ class Module
     }
 
     /**
+     * Add language to builder
+     *
+     * @param string $language
+     * @return void
+     */
+    public function language(string $language)
+    {
+        $this->addToBuilder('language', $language);
+
+        return $this;
+    }
+
+    /**
      * Add to builder
      *
      * @return void

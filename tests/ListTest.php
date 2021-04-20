@@ -54,6 +54,7 @@ class ListTest extends BaseTest
 
         $this->assertNotNull($field->value('url'));
         $this->assertNotNull($field->versions()->value());
+
         $this->assertNotNull($field->version('thumbnail')->value('url'));
     }
 

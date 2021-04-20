@@ -4,7 +4,6 @@ namespace Vume\Modules;
 
 use Vume\Classes\Entries;
 use Vume\Classes\Entry;
-use Vume\CMS;
 use Vume\Exceptions\RelationInvalidException;
 use Vume\Traits\EntriesTrait;
 
@@ -20,7 +19,6 @@ class RelationModule extends Module
      * Constructor
      *
      * @param array $relation
-     * @param Vume\CMS $cms
      */
     public function __construct(array $relation, Entry $entry)
     {

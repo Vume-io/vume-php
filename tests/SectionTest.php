@@ -35,14 +35,22 @@ class SectionTest extends BaseTest
     {
         $entry = $this->vume->section('section-test')->call()->entry();
 
-        $this->assertNotNull($entry->field('text'));
+        $this->assertEquals('Hello world', $entry->value('text'));
     }
 
     public function testSectionEntryFieldShorthandValue()
     {
         $entry = $this->vume->section('section-test')->call()->entry();
+
         $this->assertNotNull($entry->value('text'));
         $this->assertEquals($entry->field('text')->value(), $entry->value('text'));
+    }
+
+    public function testSectionEntryFieldTranslation()
+    {
+        $entry = $this->vume->section('section-test')->language('nl')->call()->entry();
+
+        $this->assertEquals('Hello world nl', $entry->value('text'));
     }
 
     public function testSectionEntryShorthandFunction()
