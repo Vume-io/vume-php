@@ -30,4 +30,11 @@ class CmsTest extends BaseTest
 
         $this->vume->section('section-test')->call();
     }
+
+    public function testCmsLanguageSetter()
+    {
+        $this->vume->setLanguage('en');
+
+        $this->assertEquals('en', $this->vume->getLanguage());
+    }
 }

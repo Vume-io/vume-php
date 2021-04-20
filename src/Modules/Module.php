@@ -26,6 +26,10 @@ class Module
     {
         $this->cms = $cms;
         $this->api = new Api($cms->getApiEndpoint(), $cms->getAccessToken());
+
+        if ($this->cms->getLanguage()) {
+            $this->language($this->cms->getLanguage());
+        }
     }
 
     /**

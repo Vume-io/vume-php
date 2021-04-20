@@ -82,4 +82,18 @@ class SectionTest extends BaseTest
 
         $this->assertInstanceOf(Entry::class, $entry);
     }
+
+    public function testSectionEntryDefaultLanguage()
+    {
+        $entry = $this->vume->setLanguage('nl')->section('section-test')->call()->entry();
+
+        $this->assertEquals('Hello world nl', $entry->value('text'));;
+    }
+
+    public function testSectionEntryDefaultLanguageCanBeOverwritten()
+    {
+        $entry = $this->vume->setLanguage('nl')->section('section-test')->language('en')->call()->entry();
+
+        $this->assertEquals('Hello world', $entry->value('text'));;
+    }
 }

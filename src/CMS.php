@@ -11,6 +11,7 @@ class CMS
 {
     private $api_endpoint = 'https://cms.vume.io';
     private $access_token;
+    private $language;
 
     /**
      * Creates a new instance of the Vume cms
@@ -71,6 +72,29 @@ class CMS
     public function getAccessToken()
     {
         return $this->access_token;
+    }
+
+    /**
+     * Set language
+     *
+     * @param string $language
+     * @return CMS
+     */
+    public function setLanguage(string $language)
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    /**
+     * Get language
+     *
+     * @return string $language
+     */
+    public function getLanguage()
+    {
+        return $this->language;
     }
 
     /**
