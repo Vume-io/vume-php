@@ -4,6 +4,7 @@ namespace Vume\Modules;
 
 use Vume\CMS;
 use Vume\Libraries\Api;
+use Vume\Libraries\Caching;
 use Vume\Exceptions\SectionNotFoundException;
 use Vume\Exceptions\ListNotFoundException;
 use Vume\Exceptions\RelationNotFoundException;
@@ -16,6 +17,7 @@ class Module
     protected $route;
     protected $called = false;
     protected $builder = [];
+    protected $cached = false;
 
     /**
      * Construct class
@@ -26,6 +28,7 @@ class Module
     {
         $this->cms = $cms;
         $this->api = new Api($cms->getApiEndpoint(), $cms->getAccessToken());
+        $this->caching = new Caching($this->cms->getCachingDir());
 
         if ($this->cms->getLanguage()) {
             $this->language($this->cms->getLanguage());
@@ -40,11 +43,21 @@ class Module
     public function call()
     {
         $this->called = true;
-        $result = $this->api->call('GET', $this->route, $this->builder);
+        
+        $result = $this->getCache($this->route, $this->builder) ?: $this->api->call('GET', $this->route, $this->builder);
+  
         switch ($result['code']) {
             case 200:
-                $this->name = $result['body']['data']['name'] ?? null;
-                return $result['body']['data'] ?? [];
+                $data = $result['body']['data'] ?? [];
+
+                $this->name = $data['name'] ?? null;
+                $this->cached = !empty($result['cached']);
+
+                if(!$this->cached) {
+                    $this->setCache($this->route, $this->builder, $result);
+                }
+
+                return $data;
             default:
                 switch ($this->type()) {
                     case 'section':
@@ -112,6 +125,16 @@ class Module
     }
 
     /**
+     * Is cached
+     * 
+     * @return boolean $cached
+     */
+    public function isCached()
+    {
+        return $this->cached;
+    }
+
+    /**
      * Add to builder
      *
      * @return void
@@ -154,4 +177,36 @@ class Module
 
         return $this;
     }
+
+    /**
+     * Cache result
+     * 
+     * @param string $route
+     * @param array $builder
+     * @param array $data
+     * 
+     * @return void
+     */
+    protected function setCache(string $route, array $builder, array $data)
+    {
+        if(!$this->cms->getCaching()) return;
+
+        $this->caching->set($this->route, $this->builder, $data);
+    }
+    
+    /**
+     * Get Cache
+     * 
+     * @param string $route
+     * @param array $builder
+     * 
+     * @return array $data
+     */
+    protected function getCache(string $route, array $builder)
+    {
+        if(!$this->cms->getCaching()) return;
+
+        return $this->caching->get($this->route, $this->builder);
+    }
+   
 }

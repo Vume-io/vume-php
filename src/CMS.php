@@ -3,6 +3,7 @@
 namespace Vume;
 
 use Vume\Classes\Entry;
+use Vume\Libraries\Caching;
 use Vume\Modules\ListModule;
 use Vume\Modules\RelationModule;
 use Vume\Modules\SectionModule;
@@ -12,6 +13,8 @@ class CMS
     private $api_endpoint = 'https://cms.vume.io';
     private $access_token;
     private $language;
+    private $caching = false;
+    private $caching_dir = '.';
 
     /**
      * Creates a new instance of the Vume cms
@@ -95,6 +98,62 @@ class CMS
     public function getLanguage()
     {
         return $this->language;
+    }
+
+    /**
+     * Set caching
+     *
+     * @param string $dir
+     * @return CMS
+     */
+    public function setCaching(bool $caching, string $dir = null)
+    {
+        $this->caching = $caching;
+
+        return $dir ? $this->setCachingDir($dir) : $this;
+    }
+
+    /**
+     * Get caching
+     *
+     * @return bool $caching
+     */
+    public function getCaching()
+    {
+        return $this->caching;
+    }
+
+    /**
+     * Set caching directory
+     *
+     * @param string $dir
+     * @return CMS
+     */
+    public function setCachingDir(string $dir)
+    {
+        $this->caching_dir = $dir;
+
+        return $this;
+    }
+
+    /**
+     * Get caching dir
+     *
+     * @return string $dir
+     */
+    public function getCachingDir()
+    {
+        return $this->caching_dir;
+    }
+      
+    /**
+     * Clear cache
+     * 
+     * @return void
+     */
+    public function clearCache()
+    {
+        (new Caching($this->getCachingDir()))->clear();
     }
 
     /**

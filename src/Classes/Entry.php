@@ -75,7 +75,7 @@ class Entry
      *
      * @param string $slug
      *
-     * @return null\RelationModule $relation
+     * @return null|RelationModule $relation
      */
     public function relation(string $slug)
     {
@@ -85,7 +85,7 @@ class Entry
     /**
      * Get the data field of entry
      *
-     * @return null\Fields $fields
+     * @return null|Fields $fields
      */
     public function fields()
     {
@@ -97,7 +97,7 @@ class Entry
      *
      * @param string $slug
      *
-     * @return null\Field $field
+     * @return null|Field $field
      */
     public function field(string $slug)
     {
@@ -118,5 +118,10 @@ class Entry
         }
 
         return $field->value($key);
+    }
+
+    public function isCached()
+    {
+        return $this->module->isCached();
     }
 }

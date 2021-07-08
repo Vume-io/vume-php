@@ -12,7 +12,7 @@ class SectionTest extends BaseTest
 {
     public function testSectionInstance()
     {
-        $section = $this->vume->section('section-test', true);
+        $section = $this->vume->section('section-test');
 
         $this->assertInstanceOf(SectionModule::class, $section);
     }
