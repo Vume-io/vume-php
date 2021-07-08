@@ -66,7 +66,7 @@ class Caching
     private function constructKey(string $route, array $builder)
     {
         ksort($builder);
-        return md5($route . implode('|', $builder));
+        return md5($route . serialize($builder));
     }
 
 }
