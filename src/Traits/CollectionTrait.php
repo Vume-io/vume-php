@@ -197,7 +197,7 @@ trait CollectionTrait
 
         foreach ($this->collection as $item) {
             if (count($parts) === 1) {
-                if (!is_array($item->value()) && str_contains(strtolower($item->value()), strtolower($value))) {
+                if (!is_array($item->value($parts[0])) && str_contains(strtolower($item->value($parts[0])), strtolower($value))) {
                     $output[] = $parent;
                     break;
                 }

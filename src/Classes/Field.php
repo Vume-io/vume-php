@@ -13,7 +13,7 @@ class Field
     public $id;
     public $type;
     public $data;
-    public $custom_value;
+    public $images;
 
     /**
      * Constructor
@@ -30,18 +30,19 @@ class Field
         $this->type = $field['type'];
         $this->data = $field['data'] ?? null;
         $this->value = $this->value();
+
+        if ($this->type === 'image') {
+            foreach($this->data as $image) {
+                $this->images[] = new Image($image);
+            }
+        }
     }
 
     public function value($key = null)
     {
-        if ($this->custom_value) {
-            return $key ? ($this->value[$key] ?? null) : $this->value;
-        }
-
         switch ($this->type) {
             case 'image':
-                $value = $this->data ?? null;
-                return $key ? ($value[0][$key] ?? null) : $value;
+                return $this->images ? $this->images[0]->value($key) : null;
             default:
                 return $this->data;
         }
@@ -49,25 +50,28 @@ class Field
 
     public function versions()
     {
-        $this->custom_value = true;
-        if ($this->type !== 'image') {
+        if (!$this->images) {
             return;
         }
 
-        $this->value = array_filter(array_map(fn ($data) => $data['versions'] ?? null, $this->data)) ?? [];
-        return $this;
+        return $this->images[0]->versions();
     }
 
     public function version(string $version)
     {
-        $this->custom_value = true;
+        if (!$this->images) {
+            return;
+        }
+
+        return $this->images[0]->version($version);
+    }
+
+    public function images()
+    {
         if ($this->type !== 'image') {
             return;
         }
 
-        $this->versions();
-        $version = array_filter(array_map(fn ($version_data) => $version_data[$version] ?? null, $this->value)) ?? [];
-        $this->value = $version[0] ?? [];
-        return $this;
+        return $this->images;
     }
 }

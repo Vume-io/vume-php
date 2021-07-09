@@ -53,7 +53,6 @@ class ListTest extends BaseTest
         $this->assertNotNull($field->value());
 
         $this->assertNotNull($field->value('url'));
-        $this->assertNotNull($field->versions()->value());
 
         $this->assertNotNull($field->version('thumbnail')->value('url'));
     }
@@ -62,7 +61,7 @@ class ListTest extends BaseTest
     {
         $entry = $this->vume->list('list-test')->call()->entries()->first();
         $field = $entry->field('image');
-
+        
         $this->assertNotNull($entry->value('image'));
         $this->assertNotNull($entry->value('image', 'url'));
         $this->assertEquals($field->value(), $entry->value('image'));
@@ -122,7 +121,7 @@ class ListTest extends BaseTest
     public function testSearchClausuleOnCollection()
     {
         $entries = $this->vume->list('list-test')->entries()->search('fields.text', '2');
-
+        
         $this->assertEquals(1, $entries->count());
     }
 }
