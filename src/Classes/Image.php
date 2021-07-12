@@ -8,6 +8,7 @@ class Image
     public $width;
     public $height;
     public $url;
+    public $alt;
     public $versions;
 
     /**
@@ -20,6 +21,7 @@ class Image
         $this->width = $image['width'];
         $this->height = $image['height'];
         $this->url = $image['url'];
+        $this->alt = $image['alt'];
 
         if(!empty($image['versions'])) {
             foreach ($image['versions'] as $key => $version) {
