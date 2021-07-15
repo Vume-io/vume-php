@@ -23,10 +23,10 @@ class ImageTest extends BaseTest
     {
         $section = $this->vume->section('section-test')->entry();
 
-        $this->assertNotNull($section->field('album')->value('url'));
-        $this->assertNotNull($section->field('album')->version('thumbnail')->value('url'));
+        $this->assertNotNull($section->field('gallery')->value('url'));
+        $this->assertNotNull($section->field('gallery')->version('thumbnail')->value('url'));
 
-        foreach ($section->field('album')->images() as $image) {
+        foreach ($section->field('gallery')->images() as $image) {
             $this->assertNotNull($image->value('url'));
             $this->assertNotNull($image->version('thumbnail')->value('url'));
         }
