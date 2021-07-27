@@ -61,7 +61,7 @@ class ListTest extends BaseTest
     {
         $entry = $this->vume->list('list-test')->call()->entries()->first();
         $field = $entry->field('image');
-        
+
         $this->assertNotNull($entry->value('image'));
         $this->assertNotNull($entry->value('image', 'url'));
         $this->assertEquals($field->value(), $entry->value('image'));
@@ -121,7 +121,18 @@ class ListTest extends BaseTest
     public function testSearchClausuleOnCollection()
     {
         $entries = $this->vume->list('list-test')->entries()->search('fields.text', '2');
-        
+
         $this->assertEquals(1, $entries->count());
+    }
+
+    public function testEmptyListEntries()
+    {
+        $list = $this->vume->list('list-test')->offset(1)->call();
+        $entries = $list->entries();
+        $this->assertFalse($entries->isEmpty());
+        $this->assertTrue($entries->isNotEmpty());
+
+        $this->assertTrue($entries->where('fields.text', 'Test 1000')->isEmpty());
+        $this->assertFalse($entries->where('fields.text', 'Test 1000')->isNotEmpty());
     }
 }

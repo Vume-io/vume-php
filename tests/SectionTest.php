@@ -83,6 +83,13 @@ class SectionTest extends BaseTest
         $this->assertInstanceOf(Entry::class, $entry);
     }
 
+    public function testSectionWithLoadedHasOneRelationEntry()
+    {
+        $entry = $this->vume->section('section-test')->withRelation('has-one-relations-test')->entry();
+
+        $this->assertInstanceOf(Entry::class, $entry);
+    }
+
     public function testSectionEntryDefaultLanguage()
     {
         $entry = $this->vume->setLanguage('nl')->section('section-test')->call()->entry();
