@@ -14,6 +14,7 @@ class Entry
     protected $module;
     protected $relations = [];
 
+
     /**
      * Constructor
      *
@@ -38,6 +39,31 @@ class Entry
         foreach ($entry['relations'] as $relation) {
             $this->relations->add(new RelationModule($relation, $this));
         }
+    }
+
+    /**
+     * Invoke
+     *
+     * @param array $arguments
+     */
+    public function __invoke(...$arguments)
+    {
+        if(!$arguments) {
+            return;
+        }
+
+        if(!$field = $this->field($arguments[0])) {
+            return;
+        }
+
+        if(!$field->hasImages()) {
+            return $field->value($arguments[1] ?? null);
+        }
+
+        $version = $arguments[1] ?? null;
+        $value = $arguments[2] ?? null;
+
+        return $version ? $field->version($version)->value($value) : $field->value($value);
     }
 
     /**
@@ -114,6 +140,53 @@ class Entry
     public function value(string $slug, string $key = null)
     {
         if (!$field = $this->field($slug)) {
+            return null;
+        }
+
+        return $field->value($key);
+    }
+
+    /**
+     * Get the entry image url by field slug and optional version
+     *
+     * @param string $slug
+     * @param string|null $version
+     * @param string|null $key
+     *
+     * @return mixed $image
+     */
+    public function image(string $slug, string $version = null, string $key = null)
+    {
+        if (!$field = $this->field($slug)) {
+            return null;
+        }
+
+        if(!$field->hasImages()) {
+            return null;
+        }
+
+        if(!$version) {
+            return $field->value($key);
+        }
+
+        return $field->version($version)->value($key);
+    }
+
+     /**
+     * Get the entry file url by field slug
+     *
+     * @param string $slug
+     * @param string|null $key
+     *
+     * @return mixed $file
+     */
+    public function file(string $slug, string $key = null)
+    {
+        if (!$field = $this->field($slug)) {
+            return null;
+        }
+
+        if(!$field->hasFiles()) {
             return null;
         }
 

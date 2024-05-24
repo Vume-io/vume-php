@@ -36,6 +36,7 @@ class SectionTest extends BaseTest
         $entry = $this->vume->section('section-test')->call()->entry();
 
         $this->assertEquals('Hello world', $entry->value('text'));
+        $this->assertEquals('Hello world', $entry('text'));
     }
 
     public function testSectionEntryFieldShorthandValue()

@@ -14,6 +14,7 @@ class Field
     public $type;
     public $data;
     public $images;
+    public $files;
 
     /**
      * Constructor
@@ -36,6 +37,12 @@ class Field
                 $this->images[] = new Image($image);
             }
         }
+
+        if ($this->type === 'file') {
+            foreach($this->data as $file) {
+                $this->files[] = new File($file);
+            }
+        }
     }
 
     public function value($key = null)
@@ -43,6 +50,8 @@ class Field
         switch ($this->type) {
             case 'image':
                 return $this->images ? $this->images[0]->value($key) : null;
+            case 'file':
+                return $this->files ? $this->files[0]->value($key) : null;
             default:
                 return $this->data;
         }
@@ -73,5 +82,15 @@ class Field
         }
 
         return $this->images;
+    }
+
+    public function hasImages()
+    {
+        return $this->images ? true : false;
+    }
+
+    public function hasFiles()
+    {
+        return $this->files ? true : false;
     }
 }
